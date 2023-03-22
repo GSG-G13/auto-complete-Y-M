@@ -39,11 +39,6 @@ input.addEventListener("input", (e) => {
                         input.value = "";
                         searchList.innerHTML = "";
                         fetchData(`https://omdbapi.com/?s=${h3Ele.textContent}&page=1&apikey=fc1fef96`, (data) => {
-                            // console.log(apiData.Search[0].Title)
-                            // console.log(apiData.Search[0].Year)
-                            // console.log(apiData.Search[0].imimdbIDd)
-                            // console.log(apiData.Search[0].Poster)
-                            // console.log(apiData.Search[0].Type)
                             resultGrid.innerHTML = ""
                             const divMoviePoster = document.createElement("div");
                             divMoviePoster.className = 'movie-poster';
