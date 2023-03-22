@@ -1,4 +1,7 @@
+
+
 const searchList = document.querySelector(".search-list");
+const resultGrid = document.querySelector(".result-grid")
 
 const fetchData = (api, cb) => {
     const xhr = new XMLHttpRequest();
@@ -20,34 +23,65 @@ input.addEventListener("input", (e) => {
     }
     if (e.target.value != "") {
         fetchData(`/autocomplete/data?key1=${e.target.value}`, (returnData) => {
-
-            fetchData(`https://omdbapi.com/?s=${e.target.value}&page=1&apikey=fc1fef96`, (apiData) => {
                 searchList.textContent = "";
                 for (let i = 0; i < returnData.length; i++) {
-
-                    const searchlistItem = document.createElement("div");
-                    searchlistItem.className = "search-list-item";
-
+                    const searchListItem = document.createElement("div");
+                    searchListItem.className = "search-list-item";
                     const searchItem = document.createElement("div");
                     searchItem.className = "search-item-info";
-
                     const h3Ele = document.createElement("h3");
                     h3Ele.textContent = `${returnData[i].name}`;
                     h3Ele.className = "titleName";
-
                     searchItem.appendChild(h3Ele);
-                    searchlistItem.appendChild(searchItem);
-                    searchList.appendChild(searchlistItem);
-
-                    searchlistItem.addEventListener("click", () => {
-                        console.log(h3Ele.textContent);
-
+                    searchListItem.appendChild(searchItem);
+                    searchList.appendChild(searchListItem);
+                    searchListItem.addEventListener("click", () => {
                         input.value = "";
                         searchList.innerHTML = "";
+                        fetchData(`https://omdbapi.com/?s=${h3Ele.textContent}&page=1&apikey=fc1fef96`, (data) => {
+                            // console.log(apiData.Search[0].Title)
+                            // console.log(apiData.Search[0].Year)
+                            // console.log(apiData.Search[0].imimdbIDd)
+                            // console.log(apiData.Search[0].Poster)
+                            // console.log(apiData.Search[0].Type)
+                            resultGrid.innerHTML = ""
+                            const divMoviePoster = document.createElement("div");
+                            divMoviePoster.className = 'movie-poster';
+                            const img = document.createElement("img");
+                            img.src = `${data.Search[0].Poster}`;
+                            console.log(data.Search[0].Poster);
+                            const movieInfo = document.createElement("div");
+                            movieInfo.className = 'movie-info';
+                            const movieTitle = document.createElement("h3");
+                            movieTitle.className = 'movie-title';
+                            movieTitle.textContent = `${data.Search[0].Title}`
+                            const ul = document.createElement("ul");
+                            ul.className = `movie-misc-info`;
+                            const li = document.createElement("li");
+                            li.className = "year";
+                            li.innerText = `Year: ${data.Search[0].Year} `
+                            console.log(data.Search[0].Year);
+                            const p = document.createElement("p");
+                            p.className = 'language';
+                            p.textContent = "English";
+                            const b = document.createElement("b");
+                            b.textContent = "Language:";
+                            divMoviePoster.appendChild(img);
+                            movieInfo.appendChild(movieTitle);
+                            ul.appendChild(li);
+                            movieInfo.appendChild(ul);
+                            b.appendChild(p);
+                            movieInfo.appendChild(p);
+                            resultGrid.appendChild(divMoviePoster);
+                            resultGrid.appendChild(movieInfo);
+
+
+
+                        })
+
                     })
                 }
 
-            })
 
         })
 
